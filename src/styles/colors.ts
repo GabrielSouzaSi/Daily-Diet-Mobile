@@ -11,17 +11,21 @@ export const colors = {
     darkTabIconDefault: '#ccc',
     darkTabIconSelected: '#fff',
   
-    primary: '#1e88e5',
-    secondary: '#f50057',
+    red_dark: '#BF3B44',
+    red_mid: '#F3BABD',
+    red_light: '#F4E6E7',
+
+    green_dark: '#639339',
+    green_mid: '#CBE4B4',
+    green_light: '#E5F0DB',
+
     gray: {
-      100: '#f3f4f6',
-      200: '#e5e7eb',
-      300: '#d1d5db',
-      400: '#9ca3af',
-      500: '#6b7280',
-      600: '#4b5563',
-      700: '#374151',
-      800: '#1f2937',
-      900: '#111827',
+      100: '#FAFAFA',
+      200: '#EFF0F0',
+      300: '#DDDEDF',
+      400: '#B9BBBC',
+      500: '#5C6265',
+      600: '#333638',
+      700: '#1B1D1E',
     },
   };

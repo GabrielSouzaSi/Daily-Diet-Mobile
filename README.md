@@ -16,8 +16,8 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 
 - [X]  Criar Projeto 
 - [ ]  Organizar Projeto 
-- [ ]  Organizar Rotas
-- [ ]  Implementar Tema
+- [X]  Organizar Rotas
+- [X]  Implementar Tema
 - [ ]  Implementar banco local
 - [ ]  Componentizar Elementos
 - [ ]  Finalizar Layout
