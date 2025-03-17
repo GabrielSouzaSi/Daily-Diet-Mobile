@@ -27,7 +27,7 @@ interface ButtonIconProps {
     weight?: IconWeight;
 }
 
-function Icon({ Icon, size=20, color="#8047F8", weight="bold", ...rest }: ButtonIconProps) {
+function Icon({ Icon, size=20, color="white", weight="bold", ...rest }: ButtonIconProps) {
     return <Icon size={size} color={color} weight={weight} {...rest} />;
 }
 

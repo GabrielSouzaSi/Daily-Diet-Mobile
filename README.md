@@ -18,7 +18,7 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 - [ ]  Organizar Projeto 
 - [X]  Organizar Rotas
 - [X]  Implementar Tema
-- [ ]  Implementar banco local
+- [X]  Implementar banco local
 - [ ]  Componentizar Elementos
 - [ ]  Finalizar Layout
 
@@ -39,5 +39,5 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 
 - [X]  Expo Router
 - [X]  NativeWind
-- [ ]  Drizle ORM/Expo SQLite
+- [X]  Drizle ORM/Expo SQLite
 - [ ]  i18next/react-i18next/expo-localization

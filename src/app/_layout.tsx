@@ -8,12 +8,23 @@ import { useFonts, NunitoSans_400Regular, NunitoSans_700Bold } from "@expo-googl
 
 import 'react-native-reanimated';
 
+// Database
+import { SQLiteProvider } from "expo-sqlite";
+import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
+import { DATABASE_NAME, db, expoDb } from "@/database/connection";
+import migrations from "../../drizzle/migrations.js";
+
 // Impede o splash screen de sumir automaticamente
 SplashScreen.preventAutoHideAsync();
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const [appIsReady, setAppIsReady] = useState(false);
+
+  const { success, error } = useMigrations(db, migrations);
+  useDrizzleStudio(expoDb)
+
   const [fontLoaded] = useFonts({
     NunitoSans_400Regular,
     NunitoSans_700Bold
@@ -21,13 +32,13 @@ function RootLayoutNav() {
 
   useEffect(() => {
     async function prepare() {
-      if (fontLoaded) {
+      if (fontLoaded && success) {
         setAppIsReady(true);
       }
     }
 
     prepare();
-  }, [fontLoaded]);
+  }, [fontLoaded, success]);
 
   // Garante que o Splash Screen só desapareça após o layout estar pronto
   const onLayoutRootView = useCallback(async () => {
@@ -58,5 +69,9 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
-  return <RootLayoutNav />;
+  return (
+    <SQLiteProvider databaseName={DATABASE_NAME}>
+      <RootLayoutNav />
+    </SQLiteProvider>
+  )
 }

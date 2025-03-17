@@ -1,38 +1,31 @@
 import { useEffect, useState } from "react"
 import { Switch, Text, TouchableOpacity, View } from "react-native"
+import { Plus } from "phosphor-react-native";
 
 import { useColorScheme } from "nativewind"
+import { addDiet, statisticDiet } from "@/database/diet";
 import { colors } from "@/styles/colors";
+import { Button } from "@/components/button";
 
 export default function Home() {
-    const { colorScheme, toggleColorScheme } = useColorScheme();
-    const [isEnabled, setIsEnabled] = useState(colorScheme === "dark"); // Inicializa com base no tema
+ 
+    async function handleStatistic() {
+        try {
+            let { percentage, statusDiet, diet } = await statisticDiet();
 
-    useEffect(() => {
-        console.log(colorScheme);
-        setIsEnabled(colorScheme === "dark")
-    }, [colorScheme]);
-
-    // const handleToggleSwitch = () => {
-    //     toggleColorScheme();
-    //     // Não é necessário setIsEnabled aqui, pois o useEffect já o faz
-    // };
+        } catch (error) {
+            console.log("handleSequenceDiet =>", error);
+        }
+    }
 
     return (
         <View className="flex-1 justify-center items-center bg-lightBackground dark:bg-darkBackground">
-            <Text className="text-3xl capitalize font-bold text-black dark:text-white">Daily Diet</Text>
-            <TouchableOpacity className="mt-10">
-                <Text className="text-3xl capitalize font-bold text-darkBackground dark:text-white">
-                    Modo {colorScheme === "light" ? "Light" : "Dark"}
-                </Text>
-            </TouchableOpacity>
-
-            <Switch
-                onValueChange={toggleColorScheme}
-                value={isEnabled}
-                trackColor={{ true: colors.lightBackground, false: colors.gray[500] }}
-                thumbColor={colors.gray[200]}
-            />
+             
+            <Button className="flex-row p-4 m-4 bg-gray-700 rounded-md justify-center items-center" onPress={() => {}}>
+                <Button.Icon Icon={Plus} />
+                <Button.Title className="font-NunitoSansBold text-base text-white">Nova Refeição</Button.Title>
+            </Button>
+            
         </View>
     );
 }
