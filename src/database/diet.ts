@@ -1,6 +1,7 @@
 import * as dietSchema from "@/database/schemas/dietSchema";
 import { tableDiet } from "./connection";
 import { count, eq } from "drizzle-orm";
+import { DietDTO } from "@/dtos/dietDTO";
 
 // Função para buscar as dietas no banco 
 export async function getDiets() {
@@ -9,6 +10,14 @@ export async function getDiets() {
         return response
     } catch (error) {
         console.log("getDiets error =>" + error);
+    }
+}
+// Função para editar uma dieta no banco 
+export async function upDiet(diet: DietDTO) {
+    try {
+         await tableDiet.update(dietSchema.diet).set(diet).where(eq(dietSchema.diet.id, diet.id))
+    } catch (error) {
+        console.log("Update Diet error =>" + error);
     }
 }
 // Função para deletar no banco a dieta por ID
@@ -116,6 +125,6 @@ export async function statisticDiet() {
         }
 
     } catch (error) {
-        console.log("statisticDiet => ", error);      
+        console.log("statisticDiet => ", error);
     }
 }
