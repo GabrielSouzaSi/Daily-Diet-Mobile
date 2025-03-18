@@ -1,6 +1,6 @@
-import { Text, TextProps, TouchableOpacity, TouchableOpacityProps } from "react-native";
-import { IconProps as PhosphorIconProps, IconWeight } from "phosphor-react-native";
-import clsx from "clsx";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { Title } from "./text";
+import { Icon } from "./icon";
 
 type ButtonProps = TouchableOpacityProps;
 
@@ -8,7 +8,7 @@ function Button({ children, className, ...rest }: ButtonProps) {
 
     return (
         <TouchableOpacity
-            className={clsx("justify-center items-center rounded-md", className)}
+            className={className}
             {...rest}
         >
             {children}
@@ -16,22 +16,7 @@ function Button({ children, className, ...rest }: ButtonProps) {
     )
 }
 
-function Title({ children, className }: TextProps) {
-    return <Text className={className}>{children}</Text>
-}
-
-interface ButtonIconProps {
-    Icon: React.ComponentType<PhosphorIconProps>;
-    size?: number;
-    color?: string;
-    weight?: IconWeight;
-}
-
-function Icon({ Icon, size=20, color="white", weight="bold", ...rest }: ButtonIconProps) {
-    return <Icon size={size} color={color} weight={weight} {...rest} />;
-}
-
-Button.Title = Title
+Button.Text = Title
 Button.Icon = Icon
 
 export { Button }

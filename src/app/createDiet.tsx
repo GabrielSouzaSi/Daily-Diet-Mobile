@@ -6,8 +6,9 @@ import { ArrowLeft, Circle } from "phosphor-react-native";
 import { colors } from "@/styles/colors";
 import { Field } from "@/components/field";
 import { useState } from "react";
-import { addDiet } from "@/database/diet";
+import { addDiet, delDiet } from "@/database/diet";
 import { DietDTO } from "@/dtos/dietDTO";
+import { Header } from "@/components/header";
 
 type DietDataWithoutId = Omit<DietDTO, 'id'>;
 
@@ -170,7 +171,7 @@ export default function CreateDiet() {
             time
         } as DietDTO
         try {
-            await addDiet(dietData)
+            await addDiet(data)
             console.log("Cadastratado!");
         } catch (error) {
             console.log("handleAddDiet => ", error);
@@ -185,15 +186,14 @@ export default function CreateDiet() {
             />
             <View className="p-8">
 
-                <View className="relative flex-row items-center">
+                <Header className="relative flex-row items-center">
                     <Button onPress={() => router.back()}>
                         <Button.Icon Icon={ArrowLeft} color={colors.gray[600]} />
                     </Button>
-
                     <Text className="absolute left-1/2 -translate-x-1/2 font-NunitoSansBold text-lg text-gray-700">
                         Nova refeição
                     </Text>
-                </View>
+                </Header>
 
             </View>
 
@@ -225,13 +225,13 @@ export default function CreateDiet() {
                         Está dentro da dieta?
                     </Text>
                     <View className="flex-row justify-between gap-4">
-                        <Button className="flex-1 flex-row gap-2 bg-gray-300 py-4" onPress={() => setCompliant(true)}>
+                        <Button className="flex-1 flex-row gap-2 bg-gray-300 py-4 justify-center items-center rounded-md" onPress={() => setCompliant(true)}>
                             <Button.Icon Icon={Circle} size={10} weight="fill" color={colors.green_dark} />
-                            <Button.Title className="font-NunitoSansBold text-base text-gray-700">Sim</Button.Title>
+                            <Button.Text className="font-NunitoSansBold text-base text-gray-700">Sim</Button.Text>
                         </Button>
-                        <Button className="flex-1 flex-row gap-2 bg-gray-300 py-4" onPress={() => setCompliant(false)}>
+                        <Button className="flex-1 flex-row gap-2 bg-gray-300 py-4 justify-center items-center rounded-md" onPress={() => setCompliant(false)}>
                             <Button.Icon Icon={Circle} size={10} weight="fill" color={colors.red_dark} />
-                            <Button.Title className="font-NunitoSansBold text-base text-gray-700">Não</Button.Title>
+                            <Button.Text className="font-NunitoSansBold text-base text-gray-700">Não</Button.Text>
                         </Button>
                     </View>
                 </View>
@@ -239,8 +239,8 @@ export default function CreateDiet() {
                 <View className="flex-1 justify-end bg-white">
 
                     <View className="flex-row">
-                        <Button className="flex-1 py-4 bg-gray-700" onPress={() => handleAddDiet()}>
-                            <Button.Title className="font-NunitoSansBold text-base text-white">Cadastrar refeição</Button.Title>
+                        <Button className="flex-1 py-4 bg-gray-700 justify-center items-center rounded-md" onPress={() => handleAddDiet()}>
+                            <Button.Text className="font-NunitoSansBold text-base text-white">Cadastrar refeição</Button.Text>
                         </Button>
                     </View>
 

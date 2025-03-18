@@ -36,6 +36,17 @@ export async function delDietId(id: number) {
         console.log("delDietId error =>" + error);
     }
 }
+// Função para deletar no banco a dieta
+export async function delDiet(): Promise<boolean> {
+    
+    try {
+        await tableDiet.delete(dietSchema.diet);
+        console.log("Todos os registros da tabela diet foram deletados.");
+        return true
+    } catch (error) {
+        console.log("delDiet error =>" + error);
+    }
+}
 // Função para adicionar no banco a dieta
 export async function addDiet(data: OmidIdDietDTO | OmidIdDietDTO[]) {
     try {
