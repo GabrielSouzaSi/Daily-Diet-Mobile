@@ -7,17 +7,17 @@ type CardProps = ViewProps;
 function Card({ children, className, ...rest }: CardProps) {
 
     return (
-        <TouchableOpacity
+        <View
             className={clsx("rounded-md", className)}
             {...rest}
         >
             {children}
-        </TouchableOpacity>
+        </View>
     )
 }
 
-function Title({ children, className }: TextProps) {
-    return <Text className={className}>{children}</Text>
+function Title({ children, className, ...rest }: TextProps) {
+    return <Text className={className} {...rest}>{children}</Text>
 }
 
 interface ButtonIconProps {
@@ -27,7 +27,7 @@ interface ButtonIconProps {
     weight?: IconWeight;
 }
 
-function Icon({ Icon, size=20, weight="bold", ...rest }: ButtonIconProps) {
+function Icon({ Icon, size = 20, weight = "bold", ...rest }: ButtonIconProps) {
     return <Icon size={size} weight={weight} {...rest} />;
 }
 

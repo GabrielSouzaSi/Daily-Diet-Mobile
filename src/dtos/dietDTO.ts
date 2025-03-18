@@ -4,5 +4,5 @@ export type DietDTO = {
   description: string;
   date: string;
   time: string;
-  compliant: boolean;
+  compliant: number;
 }

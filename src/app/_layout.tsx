@@ -53,10 +53,6 @@ function RootLayoutNav() {
 
   return (
     <View className={`flex-1 ${colorScheme === "dark" ? "dark bg-black" : "bg-white"}`} onLayout={onLayoutRootView}>
-      <StatusBar
-        backgroundColor={colorScheme === "light" ? "white" : "black"}
-        barStyle="dark-content"
-      />
       <Stack screenOptions={{ headerShown: false }} >
         <Stack.Screen name="index" />
         <Stack.Screen name="createDiet" />

@@ -3,11 +3,18 @@ import { tableDiet } from "./connection";
 import { count, eq } from "drizzle-orm";
 import { DietDTO } from "@/dtos/dietDTO";
 
+type OmidIdDietDTO = Omit<DietDTO, "id">;
+
 // Função para buscar as dietas no banco 
-export async function getDiets() {
+export async function getDiets(): Promise<DietDTO[] | null> {
     try {
         const response = await tableDiet.query.diet.findMany()
-        return response
+        if (response.length > 0) {
+            return response as DietDTO[]
+        } else {
+            return null; // Retorna 0 se não houver registros ou se a contagem for indefinida.
+        }
+
     } catch (error) {
         console.log("getDiets error =>" + error);
     }
@@ -15,7 +22,7 @@ export async function getDiets() {
 // Função para editar uma dieta no banco 
 export async function upDiet(diet: DietDTO) {
     try {
-         await tableDiet.update(dietSchema.diet).set(diet).where(eq(dietSchema.diet.id, diet.id))
+        await tableDiet.update(dietSchema.diet).set(diet).where(eq(dietSchema.diet.id, diet.id))
     } catch (error) {
         console.log("Update Diet error =>" + error);
     }
@@ -30,7 +37,7 @@ export async function delDietId(id: number) {
     }
 }
 // Função para adicionar no banco a dieta
-export async function addDiet(data: any) {
+export async function addDiet(data: OmidIdDietDTO | OmidIdDietDTO[]) {
     try {
         tableDiet.insert(dietSchema.diet).values(data).run();
         return true
@@ -104,24 +111,36 @@ export async function sequenceDiet() {
         console.log("affDiet error =>" + error);
     }
 }
-
+// Função para retornar a porcentagem e status da dieta com base na quantidade refeições dentro da dieta 
 export async function statisticDiet() {
     try {
-        let { sequence } = await sequenceDiet();
-        let diet = await getDiets();
-        let dietOff = await offDiet();
-        let dietOn = await onDiet();
-        let percentage = ((dietOn / diet.length) * 100).toFixed(2)
-        let statusDiet = (Number(percentage) > 70) ? true : false
+        let diets = await getDiets();
+        if (diets) {
+            let sequence = await sequenceDiet();
+            let dietOff = await offDiet();
+            let dietOn = await onDiet();
+            let percentage = ((dietOn / diets.length) * 100).toFixed(2)
+            let statusDiet = (Number(percentage) > 70) ? true : false
 
-        return {
-            diet,
-            dietCount: diet.length,
-            dietOff,
-            dietOn,
-            statusDiet,
-            percentage,
-            sequence
+            return {
+                diets,
+                dietCount: diets.length,
+                dietOff,
+                dietOn,
+                statusDiet,
+                percentage,
+                sequence
+            }
+        } else {
+            return {
+                diets: null,
+                dietCount: null,
+                dietOff: null,
+                dietOn: null,
+                statusDiet: null,
+                percentage: null,
+                sequence: null,
+            }
         }
 
     } catch (error) {
