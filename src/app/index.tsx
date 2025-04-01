@@ -1,130 +1,173 @@
-import { useCallback, useEffect, useState } from "react";
-import { StatusBar, Switch, Text, TouchableOpacity, View } from "react-native";
-import { router, useFocusEffect } from "expo-router";
-import { ArrowUpRight, Circle, LineVertical, Plus, WarningCircle } from "phosphor-react-native";
+import { useCallback, useState } from "react"
+import {
+	ActivityIndicator,
+	FlatList,
+	StatusBar,
+	Text,
+	View,
+} from "react-native"
+import { router, useFocusEffect } from "expo-router"
+import { BlurView } from "expo-blur"
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated"
+import { Plus } from "phosphor-react-native"
 
-import { useColorScheme } from "nativewind";
-import { statisticDiet } from "@/database/diet";
-import { colors } from "@/styles/colors";
-import { Button } from "@/components/button";
-import { DietDTO } from "@/dtos/dietDTO";
-import { Header } from "@/components/header";
+import { useColorScheme } from "nativewind"
+import { getDietsOrder, statisticDiet } from "@/database/diet"
+import { Button } from "@/components/button"
+import { HeaderHome } from "@/components/home/header"
 
-import Logo from "@/assets/logo.png"
-import { Card } from "@/components/card";
+import { GroupedDiets } from "@/dtos/groupDiets"
+import { ListMeals } from "@/components/home/listMeals"
+import { CardInfo } from "@/components/home/cardInfo"
 
 export default function Home() {
-    const { colorScheme } = useColorScheme();
-    const [diet, setDiet] = useState<DietDTO[]>();
-    const [percentage, setPercentage] = useState<string>();
-    const [statusDiet, setStatusDiet] = useState<boolean>();
+	const { colorScheme } = useColorScheme()
+	const [percentage, setPercentage] = useState<string>()
+	const [statusDiet, setStatusDiet] = useState<boolean>()
+	const [dietOrder, setDietOrder] = useState<GroupedDiets[] | null>(null)
+	const [isLoading, setIsLoading] = useState(true)
 
-    async function handleStatistic() {
-        try {
-            let { percentage, statusDiet, diets } = await statisticDiet();
-            setDiet(diets);
-            setStatusDiet(statusDiet);
-            setPercentage(percentage);
+	async function handleStatistic() {
+		try {
+			setIsLoading(true)
+			let [stats, response] = await Promise.all([
+				statisticDiet(),
+				getDietsOrder(),
+			])
+			setDietOrder(response)
+			setStatusDiet(stats.statusDiet)
+			setPercentage(stats.percentage)
+		} catch (error) {
+			console.log("handleSequenceDiet =>", error)
+		} finally {
+			setIsLoading(false)
+		}
+	}
 
-        } catch (error) {
-            console.log("handleSequenceDiet =>", error);
-        }
-    }
+	useFocusEffect(
+		useCallback(() => {
+			let isActive = true
 
-    useFocusEffect(
-        useCallback(() => {
-            handleStatistic();
-        }, [])
-    );
+			const fetch = async () => {
+				try {
+					if (isActive) await handleStatistic()
+				} catch (error) {
+					console.log(error)
+				}
+			}
 
-    return (
-        <View className="flex-1 bg-lightBackground dark:bg-darkBackground p-8">
+			fetch()
 
-            <StatusBar
-                backgroundColor={colorScheme === "light" ? "white" : "dark"}
-                barStyle={colorScheme === "light" ? "dark-content" : "light-content"}
-            />
+			return () => {
+				isActive = false
+			}
+		}, [])
+	)
 
-            <Header className="flex-row justify-between mb-8">
-                <Header.Img source={Logo} resizeMode="contain" />
-                <Header.Button activeOpacity={0.5}>
-                    <Header.Img src={"https://avatars.githubusercontent.com/u/25905000?v=4"} className="w-10 h-10 border-2 border-gray-600 rounded-full" resizeMode="contain" />
-                </Header.Button>
-            </Header>
+	return (
+		<View className="flex-1 bg-lightBackground dark:bg-darkBackground p-8">
+			<StatusBar
+				backgroundColor={colorScheme === "light" ? "white" : "black"}
+				barStyle={
+					colorScheme === "light" ? "dark-content" : "light-content"
+				}
+			/>
 
-            {percentage ? (<Button activeOpacity={0.7}>
-                <Card className={`${statusDiet ? "bg-green_light" : "bg-red_light"} p-3 rounded-xl`}>
-                    <Card className="flex-row justify-end">
-                        <Card.Icon Icon={ArrowUpRight} color={statusDiet ? colors.green_dark : colors.red_dark} />
-                    </Card>
-                    <Card className="flex items-center py-2">
-                        <Card.Text className="font-NunitoSansBold text-2xl text-gray-700">{percentage}%</Card.Text>
-                        <Card.Text className="font-NunitoSansRegular text-base text-gray-700">das refeições dentro da dieta</Card.Text>
-                    </Card>
-                </Card>
-            </Button>)
-                :
-                (<Card className="bg-gray-300 p-3 dark:bg-gray-600 rounded-xl" >
-                    <Card className="flex items-center gap-4 py-2">
-                        <Card.Icon Icon={WarningCircle} color={colorScheme === "light" ? colors.gray[700] : "white"} size={32} />
-                        <Card.Text className="font-NunitoSansBold text-2xl text-white">Nenhuma refeição cadastrada</Card.Text>
-                    </Card>
-                </Card>)}
+			<HeaderHome />
 
-            <Text className="font-NunitoSansBold text-base text-gray-700 dark:text-white mt-8 mb-4">
-                Refeições
-            </Text>
+			<CardInfo percentage={percentage} statusDiet={statusDiet} />
 
-            <Button className="flex-row p-4 bg-gray-600 rounded-md justify-center items-center gap-4 mb-4 dark:bg-gray-600" onPress={() => router.navigate("/createDiet")}>
-                <Button.Icon Icon={Plus} color="white" />
-                <Button.Text className="font-NunitoSansBold text-base text-white">Nova Refeição</Button.Text>
-            </Button>
+			<Text className="font-NunitoSansBold text-base text-gray-700 dark:text-white mt-8 mb-4">
+				Refeições
+			</Text>
 
-            <Text className="font-NunitoSansBold text-lg text-gray-700 my-3 dark:text-white">
-                12.08.22
-            </Text>
+			<Button
+				className="flex-row p-4 bg-gray-600 rounded-md justify-center items-center gap-4 mb-4 dark:bg-gray-600"
+				onPress={() => router.navigate("/createDiet")}
+			>
+				<Button.Icon Icon={Plus} color="white" />
+				<Button.Text className="font-NunitoSansBold text-base text-white">
+					Nova Refeição
+				</Button.Text>
+			</Button>
 
-            <Button className="flex-row p-4 border-2 border-gray-200 rounded-md items-center gap-3 mb-3" activeOpacity={0.7}>
-                <Button.Text className="font-NunitoSansBold text-sm text-gray-600 dark:text-white">20:00</Button.Text>
-                <Button.Icon Icon={LineVertical} size={20} color={colors.gray[400]} />
-                <Button.Text className="flex-1 font-NunitoSansRegular text-base text-gray-600 dark:text-white">X-tudo</Button.Text>
-                <Button.Icon Icon={Circle} size={20} weight="fill" color={colors.red_mid} />
-            </Button>
-            <Button className="flex-row p-4 border-2 border-gray-200 rounded-md items-center gap-3 mb-3" activeOpacity={0.7}>
-                <Button.Text className="font-NunitoSansBold text-sm text-gray-600 dark:text-white">20:00</Button.Text>
-                <Button.Icon Icon={LineVertical} size={20} color={colors.gray[400]} />
-                <Button.Text className="flex-1 font-NunitoSansRegular text-base text-gray-600 dark:text-white">X-tudo</Button.Text>
-                <Button.Icon Icon={Circle} size={20} weight="fill" color={colors.red_mid} />
-            </Button>
-            <Button className="flex-row p-4 border-2 border-gray-200 rounded-md items-center gap-3 mb-3" activeOpacity={0.7}>
-                <Button.Text className="font-NunitoSansBold text-sm text-gray-600 dark:text-white">20:00</Button.Text>
-                <Button.Icon Icon={LineVertical} size={20} color={colors.gray[400]} />
-                <Button.Text className="flex-1 font-NunitoSansRegular text-base text-gray-600 dark:text-white">X-tudo</Button.Text>
-                <Button.Icon Icon={Circle} size={20} weight="fill" color={colors.red_mid} />
-            </Button>
-            <Text className="font-NunitoSansBold text-lg text-gray-700 dark:text-white my-3">
-                12.08.22
-            </Text>
+			<FlatList
+				data={dietOrder ?? []}
+				keyExtractor={(item) => item.date}
+				renderItem={({ item }) => <ListMeals {...item} />}
+				showsVerticalScrollIndicator={false}
+				ListEmptyComponent={() => (
+					<Text className="font-NunitoSansBold text-center text-gray-500 dark:text-gray-400 mt-10">
+						Nenhuma refeição encontrada.
+					</Text>
+				)}
+			/>
+			{isLoading && (
+				<Animated.View
+					entering={FadeIn.duration(500)}
+					exiting={FadeOut.duration(500)}
+					style={{
+						position: "absolute",
+						top: 0,
+						left: 0,
+						right: 0,
+						bottom: 0,
+						justifyContent: "center",
+						alignItems: "center",
+						zIndex: 10,
+					}}
+				>
+					{/* Fundo escuro semi-transparente */}
+					<Animated.View
+						entering={FadeIn.duration(500)}
+						exiting={FadeOut.duration(500)}
+						style={{
+							position: "absolute",
+							top: 0,
+							left: 0,
+							right: 0,
+							bottom: 0,
+							backgroundColor:
+								colorScheme === "light"
+									? "rgba(0,0,0,0.2)"
+									: "rgba(0,0,0,0.5)",
+						}}
+					/>
 
-            <Button className="flex-row p-4 border-2 border-gray-200 rounded-md items-center gap-3 mb-3" activeOpacity={0.7}>
-                <Button.Text className="font-NunitoSansBold text-sm text-gray-600 dark:text-white">20:00</Button.Text>
-                <Button.Icon Icon={LineVertical} size={20} color={colors.gray[400]} />
-                <Button.Text className="flex-1 font-NunitoSansRegular text-base text-gray-600 dark:text-white">X-tudo</Button.Text>
-                <Button.Icon Icon={Circle} size={20} weight="fill" color={colors.red_mid} />
-            </Button>
-            <Button className="flex-row p-4 border-2 border-gray-200 rounded-md items-center gap-3 mb-3" activeOpacity={0.7}>
-                <Button.Text className="font-NunitoSansBold text-sm text-gray-600 dark:text-white">20:00</Button.Text>
-                <Button.Icon Icon={LineVertical} size={20} color={colors.gray[400]} />
-                <Button.Text className="flex-1 font-NunitoSansRegular text-base text-gray-600 dark:text-white">X-tudo</Button.Text>
-                <Button.Icon Icon={Circle} size={20} weight="fill" color={colors.red_mid} />
-            </Button>
-            <Button className="flex-row p-4 border-2 border-gray-200 rounded-md items-center gap-3 mb-3" activeOpacity={0.7}>
-                <Button.Text className="font-NunitoSansBold text-sm text-gray-600 dark:text-white">20:00</Button.Text>
-                <Button.Icon Icon={LineVertical} size={20} color={colors.gray[400]} />
-                <Button.Text className="flex-1 font-NunitoSansRegular text-base text-gray-600 dark:text-white">X-tudo</Button.Text>
-                <Button.Icon Icon={Circle} size={20} weight="fill" color={colors.red_mid} />
-            </Button>
+					{/* Blur por cima do fundo escuro */}
+					<BlurView
+						intensity={50}
+						tint={colorScheme === "light" ? "light" : "dark"}
+						style={{
+							position: "absolute",
+							top: 0,
+							left: 0,
+							right: 0,
+							bottom: 0,
+						}}
+					/>
 
-        </View>
-    );
+					<View
+						style={{
+							justifyContent: "center",
+							alignItems: "center",
+						}}
+					>
+						<ActivityIndicator size="large" color="#4CAF50" />
+						<Text
+							style={{
+								marginTop: 16,
+								fontSize: 16,
+								fontFamily: "NunitoSans-Bold",
+								color:
+									colorScheme === "light" ? "#333" : "#fff",
+							}}
+						>
+							Carregando suas refeições...
+						</Text>
+					</View>
+				</Animated.View>
+			)}
+		</View>
+	)
 }
