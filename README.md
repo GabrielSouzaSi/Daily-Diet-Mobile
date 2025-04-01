@@ -24,7 +24,7 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 
 ### 📱 Telas:
 
-- [ ]  Home 
+- [X]  Home
 - [ ]  Estatísticas 
 - [X]  Criação
 - [ ]  Criação - Preenchido
