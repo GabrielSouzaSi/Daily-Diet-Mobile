@@ -35,6 +35,7 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 -   [ ] Refeição - Fora da dieta
 -   [ ] Edição
 -   [ ] Exlcusão
+-   [x] Feedback
 
 ### 🤓 Tecnologias e Recursos aplicados
 
