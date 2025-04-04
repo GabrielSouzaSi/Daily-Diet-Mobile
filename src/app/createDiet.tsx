@@ -31,6 +31,13 @@ export default function CreateDiet() {
 			console.log("Cadastratado!")
 		} catch (error) {
 			console.log("handleAddDiet => ", error)
+		} finally {
+			router.push({
+				pathname: "/feedback",
+				params: {
+					status: compliant,
+				},
+			} as any)
 		}
 	}
 
