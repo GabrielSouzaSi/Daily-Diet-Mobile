@@ -20,7 +20,7 @@ export default function Feedback() {
 					colorScheme === "light" ? "dark-content" : "light-content"
 				}
 			/>
-			{status ? (
+			{status == "1" ? (
 				<View className="items-center gap-3">
 					<Text className="text-green_dark font-NunitoSansBold text-2xl">
 						Continue assim!
