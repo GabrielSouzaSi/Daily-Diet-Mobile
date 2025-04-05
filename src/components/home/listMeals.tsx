@@ -17,12 +17,7 @@ export function ListMeals({ date, meals }: GroupedDiets) {
 					key={meal.id}
 					className="flex-row p-4 border-2 border-gray-200 rounded-md items-center gap-3 mb-3"
 					activeOpacity={0.7}
-					onPress={() =>
-						router.push({
-							pathname: "/createDiet",
-							params: { data: JSON.stringify({ id: meal.id }) },
-						})
-					}
+					onPress={() => router.replace(`/${meal.id}`)}
 				>
 					<Button.Text className="font-NunitoSansBold text-sm text-gray-600 dark:text-white">
 						{meal.time.slice(0, 5)}
