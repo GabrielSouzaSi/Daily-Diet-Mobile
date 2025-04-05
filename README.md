@@ -28,11 +28,9 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 -   [x] Home
 -   [x] Estatísticas
 -   [x] Criação
--   [ ] Criação - Preenchido
--   [ ] Criação - Feedback
--   [ ] Refeição - Dentro da dieta
--   [ ] Edição
--   [ ] Refeição - Fora da dieta
+-   [x] Refeição - Dentro da dieta
+-   [x] Refeição - Fora da dieta
+-   [x] Dieta
 -   [ ] Edição
 -   [ ] Exlcusão
 -   [x] Feedback
