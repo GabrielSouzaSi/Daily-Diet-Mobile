@@ -7,8 +7,8 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 ### ✨ Funcionalidades:
 
 -   [x] Adicionar uma nova refeição
--   [ ] Editar uma refeição
--   [ ] Remover uma refeição da listagem
+-   [x] Editar uma refeição
+-   [x] Remover uma refeição da listagem
 -   [x] Mostrar as estatísticas do progresso da dieta
 -   [x] Navegação entre telas em pilha
 -   [x] Armazenamento local das refeições
@@ -21,7 +21,7 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 -   [x] Implementar Tema
 -   [x] Implementar banco local
 -   [ ] Componentizar Elementos
--   [ ] Finalizar Layout
+-   [x] Finalizar Layout
 
 ### 📱 Telas:
 
@@ -31,8 +31,7 @@ Desenvolver uma aplicação de cadastro de refeições, que contém as seguintes
 -   [x] Refeição - Dentro da dieta
 -   [x] Refeição - Fora da dieta
 -   [x] Dieta
--   [ ] Edição
--   [ ] Exlcusão
+-   [x] Edição
 -   [x] Feedback
 
 ### 🤓 Tecnologias e Recursos aplicados
