@@ -19,6 +19,22 @@ export async function getDiets(): Promise<DietDTO[] | null> {
 		console.log("getDiets error =>" + error)
 	}
 }
+// Função para buscar as dieta por id no banco
+export async function getDietId(id: number): Promise<DietDTO | null> {
+	try {
+		const response = await tableDiet
+			.select()
+			.from(dietSchema.diet)
+			.where(eq(dietSchema.diet.id, id))
+		if (response.length > 0) {
+			return response[0] as DietDTO
+		} else {
+			return null // Retorna 0 se não houver registros ou se a contagem for indefinida.
+		}
+	} catch (error) {
+		console.log("getDietId error =>" + error)
+	}
+}
 // Função para buscar as dietas no banco ordenado por data e hora, agrupar por data e hora
 export async function getDietsOrder(): Promise<GroupedDiets[] | null> {
 	try {
