@@ -78,7 +78,7 @@ export async function upDiet(diet: DietDTO) {
 	try {
 		await tableDiet
 			.update(dietSchema.diet)
-			.set(diet)
+			.set({ ...diet, compliant: Boolean(diet.compliant) })
 			.where(eq(dietSchema.diet.id, diet.id))
 	} catch (error) {
 		console.log("Update Diet error =>" + error)
@@ -108,7 +108,23 @@ export async function delDiet(): Promise<boolean> {
 // Função para adicionar no banco a dieta
 export async function addDiet(data: OmidIdDietDTO | OmidIdDietDTO[]) {
 	try {
-		tableDiet.insert(dietSchema.diet).values(data).run()
+		// Mapeia os dados forçando o campo `compliant` a ser booleano
+		if (Array.isArray(data)) {
+			const values = data.map((item) => ({
+				...item,
+				compliant: Boolean(item.compliant),
+			}))
+
+			await tableDiet.insert(dietSchema.diet).values(values).run()
+		} else {
+			const value = {
+				...data,
+				compliant: Boolean(data.compliant),
+			}
+
+			await tableDiet.insert(dietSchema.diet).values(value).run()
+		}
+
 		return true
 	} catch (error) {
 		console.log("addDiet error =>" + error)
