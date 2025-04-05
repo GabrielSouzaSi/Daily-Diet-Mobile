@@ -66,7 +66,7 @@ function RootLayoutNav() {
 				<Stack.Screen name="index" />
 				<Stack.Screen name="createDiet" />
 				<Stack.Screen name="delDiet" />
-				<Stack.Screen name="diet" />
+				<Stack.Screen name="[id]" />
 				<Stack.Screen name="statistic" />
 				<Stack.Screen name="feedback" />
 			</Stack>
