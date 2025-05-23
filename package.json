@@ -1,11 +1,14 @@
 {
   "name": "daily-diet",
   "main": "expo-router/entry",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
+    "bump": "node bump-version.js",
+    "bump:minor": "node bump-version.js minor",
+    "bump:major": "node bump-version.js major",
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll"
   },
@@ -40,7 +43,8 @@
     "react-native-screens": "~4.4.0",
     "react-native-web": "~0.19.13",
     "tailwindcss": "^3.4.17",
-    "expo-blur": "~14.0.3"
+    "expo-blur": "~14.0.3",
+    "react-native-svg": "15.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

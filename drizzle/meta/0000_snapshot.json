@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "7ce78675-0cf3-43c1-bf00-b9034f6de12b",
+  "id": "141e4f8d-9f1b-4cff-8409-7d7013631f95",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "diets": {
@@ -18,7 +18,7 @@
           "name": "name",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "description": {
@@ -32,21 +32,21 @@
           "name": "date",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "time": {
           "name": "time",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
         "compliant": {
           "name": "compliant",
           "type": "integer",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         }
       },

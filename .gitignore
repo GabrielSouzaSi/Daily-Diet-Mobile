@@ -3,6 +3,9 @@
 # dependencies
 node_modules/
 
+# android
+android
+
 # Expo
 .expo/
 dist/
@@ -16,9 +19,6 @@ expo-env.d.ts
 *.p12
 *.key
 *.mobileprovision
-
-# drizzle
-drizzle/
 
 # Metro
 .metro-health-check*
